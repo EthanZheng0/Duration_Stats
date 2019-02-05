@@ -8,15 +8,25 @@ import glob
 import wave
 import contextlib
 
-# Change path to folders where sound files are located like
-# /Users/myName/Desktop/myFolder/*.wav
-path = '/*.wav'   
-files = glob.glob(path)   
+files = glob.glob('*.wav')
+files.sort()
+listDuration = []
 for name in files:
-    with contextlib.closing(wave.open(name,'r')) as f:
-        frames = f.getnframes()
-        rate = f.getframerate()
-        duration = frames / float(rate)
-        # Change the rounded decimals as needed
-        # Here I round it to 3 decimals
-        print(round(duration,3))
+        print(name)
+        with contextlib.closing(wave.open(name,'r')) as f:
+                frames = f.getnframes()
+                rate = f.getframerate()
+                duration = frames / float(rate)
+
+                # Change the rounded decimals as needed
+                # Here I round it to 3 decimals
+                l = [name, round(duration,3)]
+                listDuration.append(l)
+
+fileName = "_duration.txt"
+print("\nDuration data output as " + fileName)
+fileOutput = open(fileName, 'w')
+for i in range(len(listDuration)):
+        for j in range(len(listDuration[i])):
+                fileOutput.write(str(listDuration[i][j]) + '\t')
+        fileOutput.write('\r')
